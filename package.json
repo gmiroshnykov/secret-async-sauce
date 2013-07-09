@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "dependencies": {
     "request": "~2.22.0",
-    "async": "~0.2.9"
+    "async": "~0.2.9",
+    "underscore": "~1.5.1"
   }
 }

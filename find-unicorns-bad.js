@@ -1,16 +1,19 @@
-var token = '78bea3c9ab59165a670ee62c1756866d0f097f5a';
+var request = require('request');
 
-var request = require('request').defaults({
-  headers: {
-    'User-Agent': process.title + ' ' + process.version,
-    'Authorization': 'bearer ' + token
-  }
-});
+module.exports = function(githubToken, callback) {
+  var r = request.defaults({
+    headers: {
+      'User-Agent': process.title + ' ' + process.version,
+      'Authorization': 'bearer ' + githubToken
+    }
+  });
 
-module.exports = function(callback) {
   var url = 'https://api.github.com/legacy/repos/search/unicorns';
-  request(url, function(err, response, body) {
+  r.get(url, function(err, response, body) {
     if (err) return callback(err);
+    if (response.statusCode !== 200) {
+      return callback(new Error(body));
+    }
 
     var repositories = JSON.parse(body).repositories;
     var output = {};
@@ -24,19 +27,23 @@ module.exports = function(callback) {
 
       var url = 'https://api.github.com/repos/' + repository.owner +
         '/' + repository.name + '/collaborators';
-      request(url, function(err, response, body) {
+      r.get(url, function(err, response, body) {
         if (didWeFail) return;
         if (err) {
           didWeFail = true;
           return callback(err);
         }
 
+        if (response.statusCode !== 200) {
+          return callback(new Error(body));
+        }
+
         var collaborators = JSON.parse(body);
-        output[fullname] = collaborators.length;
+        output[this.fullname] = collaborators.length;
         if (++counter == total) {
           return callback(null, output);
         }
-      });
+      }.bind({fullname: fullname}));
     }
   });
 };

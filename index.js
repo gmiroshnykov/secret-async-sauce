@@ -1,4 +1,4 @@
-var findUnicorns = require('./find-unicorns');
+var findUnicorns = require('./find-unicorns-named');
 
 findUnicorns(function(err, unicorns) {
   if (err) throw err;
