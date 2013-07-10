@@ -1,9 +1,19 @@
 var request = require('request'),
-    async = require('async'),
-    _ = require('underscore');
+    async = require('async');
 
 module.exports = function(githubToken, callback) {
-  return findRepositoriesByKeyword('unicorns', callback);
+  var keyword = 'unicorns';
+
+  return async.waterfall([
+    async.apply(findRepositoriesByKeyword, keyword),
+    countCollaboratorsOfRepositories
+  ], callback);
+
+  // return async.compose(
+  //   countCollaboratorsOfRepositories,
+  //   findRepositoriesByKeyword
+  // )(keyword, callback);
+  //
 
   function findRepositoriesByKeyword(keyword, callback) {
     var url = 'https://api.github.com/legacy/repos/search/' + keyword;
@@ -11,7 +21,7 @@ module.exports = function(githubToken, callback) {
       if (err) return callback(err);
 
       var repositories = json.repositories;
-      return countCollaboratorsOfRepositories(repositories, callback);
+      return callback(null, repositories);
     });
   }
 

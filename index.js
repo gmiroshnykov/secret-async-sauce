@@ -1,4 +1,4 @@
-var findUnicorns = require('./find-unicorns-named');
+var findUnicorns = require('./find-unicorns-better');
 
 var githubToken = '78bea3c9ab59165a670ee62c1756866d0f097f5a';
 findUnicorns(githubToken, function(err, unicorns) {
