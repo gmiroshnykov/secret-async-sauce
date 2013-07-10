@@ -9,12 +9,6 @@ module.exports = function(githubToken, callback) {
     countCollaboratorsOfRepositories
   ], callback);
 
-  // return async.compose(
-  //   countCollaboratorsOfRepositories,
-  //   findRepositoriesByKeyword
-  // )(keyword, callback);
-  //
-
   function findRepositoriesByKeyword(keyword, callback) {
     var url = 'https://api.github.com/legacy/repos/search/' + keyword;
     getJson(url, function(err, json) {
@@ -38,9 +32,7 @@ module.exports = function(githubToken, callback) {
 
   function countCollaboratorsOfRepository(repository, callback) {
     var fullname = repository.owner + '/' + repository.name;
-
-    var url = 'https://api.github.com/repos/' + repository.owner +
-      '/' + repository.name + '/collaborators';
+    var url = 'https://api.github.com/repos/' + fullname + '/collaborators';
     getJson(url, function(err, collaborators) {
       if (err) return callback(err);
 
