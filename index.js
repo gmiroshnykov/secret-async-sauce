@@ -1,6 +1,7 @@
 var findUnicorns = require('./find-unicorns-named');
 
-findUnicorns(function(err, unicorns) {
+var githubToken = '78bea3c9ab59165a670ee62c1756866d0f097f5a';
+findUnicorns(githubToken, function(err, unicorns) {
   if (err) throw err;
 
   console.log('Found unicorns:');
