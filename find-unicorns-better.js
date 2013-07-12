@@ -36,11 +36,11 @@ module.exports = function(githubToken, callback) {
     getJson(url, function(err, collaborators) {
       if (err) return callback(err);
 
-      var result = {
+      var bit = {
         repository: fullname,
         count: collaborators.length
       };
-      return callback(null, result);
+      return callback(null, bit);
     });
   }
 

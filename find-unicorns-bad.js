@@ -25,8 +25,7 @@ module.exports = function(githubToken, callback) {
       var repository = repositories[i];
       var fullname = repository.owner + '/' + repository.name;
 
-      var url = 'https://api.github.com/repos/' + repository.owner +
-        '/' + repository.name + '/collaborators';
+      var url = 'https://api.github.com/repos/' + fullname + '/collaborators';
       r.get(url, function(err, response, body) {
         if (didWeFail) return;
         if (err) {
